@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AULZ TOP UP</title>
+<style>
+* {margin: 0; padding: 0; box-sizing: border-box;}
+body {background: #0d0d0d; color: #fff; font-family: Arial, sans-serif;}
+header {background: #000; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center;}
+header h1 {font-size: 18px; color: #ff00ff; text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;}
+.banner video {width: 100%; height: 220px; object-fit: cover; display: block;}
+.marquee {background: #0d0d0d; color: #00ff88; padding: 8px; font-size: 14px; font-weight: bold; white-space: nowrap; overflow: hidden;}
+.marquee span {display: inline-block; padding-left: 100%; animation: marquee 12s linear infinite;}
+@keyframes marquee {0% {transform: translateX(0);} 100% {transform: translateX(-100%);}}
+.game-tabs {display: flex; gap: 8px; padding: 12px; overflow-x: auto;}
+.tab-btn {padding: 8px 14px; border: 1px solid #ff00ff; background: #1a1a1a; color: #fff; border-radius: 6px; cursor: pointer; white-space: nowrap; font-size: 13px;}
+.tab-btn.active {background: linear-gradient(90deg, #ff00ff, #00c8ff); color: #000; font-weight: bold;}
+.section-title {padding: 15px; font-size: 16px; font-weight: bold;}
+.products {display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 12px 20px;}
+.card {background: #1a1a1a; border-radius: 12px; overflow: hidden; text-align: center;}
+.card img {width: 100%; height: 120px; object-fit: cover;}
+.card h3 {font-size: 13px; margin: 10px 5px; min-height: 36px;}
+.card button {width: 90%; margin-bottom: 10px; padding: 8px; border: none; border-radius: 8px; background: linear-gradient(90deg, #ff00ff, #00c8ff); color: #000; font-weight: bold; cursor: pointer;}
+.modal {display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 999;}
+.modal-content {background: #1a1a1a; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; border: 1px solid #ff00ff; max-height: 80vh; overflow-y: auto;}
+.modal h3 {color: #ff00ff; margin-bottom: 15px; text-align: center;}
+.produk-block {margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px;}
+.produk-block h4 {color: #00c8ff; margin-bottom: 8px; text-align: center;}
+.produk-block li {padding: 8px 0; border-bottom: 1px solid #222; text-align: center; font-size: 14px; list-style: none;}
+.wa-btn {background: #25D366; color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; margin-top: 10px; font-weight: bold; cursor: pointer; font-size: 15px;}
+.close-btn {background: #ff4444; color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; margin-top: 10px; font-weight: bold; cursor: pointer;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AULZ TOP UP</h1>
+  <div>☰</div>
+</header>
+
+<div class="banner" style="position:relative;">
+  <video id="bannerVideo" autoplay loop playsinline muted style="width:100%; height:220px; object-fit:cover;">
+    <source src="https://i.imgur.com/3zq4w3Z.mp4" type="video/mp4">
+  </video>
+  <button onclick="document.getElementById('bannerVideo').muted=false"
+    style="position:absolute; bottom:10px; right:10px; background:#ff00ff; border:none; padding:8px 12px; border-radius:5px; color:#fff; font-weight:bold; font-size:12px;">
+    🔊 Suara
+  </button>
+</div>
+
+<div class="marquee">
+  <span>TOP UP GAME MURAH - PROSES CEPAT 1-5 MENIT - 24 JAM</span>
+</div>
+
+<div class="game-tabs">
+  <button class="tab-btn active" onclick="switchGame('ff')">Free Fire</button>
+  <button class="tab-btn" onclick="switchGame('ml')">MOBILE LEGENDS</button>
+  <button class="tab-btn" onclick="switchGame('genshin')">Genshin</button>
+  <button class="tab-btn" onclick="switchGame('pubg')">PUBG MOBILE</button>
+  <button class="tab-btn" onclick="switchGame('hok')">HONOR OF KING</button>
+  <button class="tab-btn" onclick="switchGame('roblox')">Roblox</button>
+  <button class="tab-btn" onclick="switchGame('hsr')">HSR</button>
+  <button class="tab-btn" onclick="switchGame('zzz')">ZZZ</button>
+</div>
+
+<div class="section-title" id="gameTitle">LIST DIAMOND FREE FIRE</div>
+<div class="products" id="productList"></div>
+
+<div class="modal" id="listModal">
+  <div class="modal-content">
+    <h3>DAFTAR HARGA</h3>
+    <div id="allListHarga"></div>
+    <button class="wa-btn" id="waBtn">Order via WhatsApp</button>
+    <button class="close-btn" onclick="closeModal()">Tutup</button>
+  </div>
+</div>
+
+<script>
+const allData = {
+  ff: {
+    title: "LIST DIAMOND FREE FIRE",
+    items: {
+      "5 Diamond": ["Rp 924"], "12 Diamond": ["Rp 2.000"], "25 Diamond": ["Rp 3.500"],
+      "50 Diamond": ["Rp 7.000"], "70 Diamond": ["Rp 10.000"], "100 Diamond": ["Rp 14.000"],
+      "140 Diamond": ["Rp 20.000"], "210 Diamond": ["Rp 30.000"], "280 Diamond": ["Rp 40.000"],
+      "355 Diamond": ["Rp 50.000"], "500 Diamond": ["Rp 70.000"], "720 Diamond": ["Rp 100.000"],
+      "1000 Diamond": ["Rp 140.000"], "1440 Diamond": ["Rp 200.000"], "2000 Diamond": ["Rp 280.000"],
+      "2880 Diamond": ["Rp 400.000"], "Membership Mingguan": ["Rp 25.000"], "Membership Bulanan": ["Rp 85.000"]
+    },
+    img: "https://i.imgur.com/2LyIYZn.jpeg"
+  },
+  ml: {
+    title: "LIST DIAMOND MOBILE LEGENDS",
+    items: {
+      "17 Diamond": ["Rp 4.000"], "28 Diamond": ["Rp 7.000"], "40 Diamond": ["Rp 10.000"],
+      "59 Diamond": ["Rp 14.000"], "86 Diamond": ["Rp 21.000"], "113 Diamond": ["Rp 28.000"],
+      "172 Diamond": ["Rp 42.000"], "257 Diamond": ["Rp 63.000"], "344 Diamond": ["Rp 84.000"],
+      "429 Diamond": ["Rp 105.000"], "514 Diamond": ["Rp 125.000"], "706 Diamond": ["Rp 170.000"],
+      "875 Diamond": ["Rp 210.000"], "963 Diamond": ["Rp 230.000"], "1049 Diamond": ["Rp 250.000"],
+      "Twilight Pass": ["Rp 135.000"], "Starlight Member": ["Rp 150.000"]
+    },
+    img: "https://i.imgur.com/2LyIYZn.jpeg"
+  },
+  genshin: {
+    title: "LIST GENSHIN CRYSTAL",
+    items: {
+      "60 Genesis": ["Rp 15.000"], "300 + 30 Genesis": ["Rp 70.000"], "980 + 110 Genesis": ["Rp 225.000"],
+      "1980 + 260 Genesis": ["Rp 450.000"], "3280 + 600 Genesis": ["Rp 750.000"],
+      "Blessing of Welkin": ["Rp 60.000"], "Battle Pass Gnostic": ["Rp 150.000"]
+    },
+    img: "https://i.imgur.com/2LyIYZn.jpeg"
+  },
+  pubg: {
+    title: "LIST UC PUBG MOBILE",
+    items: {
+      "60 UC": ["Rp 15.000"], "180 UC": ["Rp 40.000"], "325 UC": ["Rp 70.000"],
+      "660 UC": ["Rp 140.000"], "1800 UC": ["Rp 350.000"], "3850 UC": ["Rp 700.000"],
+      "8100 UC": ["Rp 1.400.000"], "Prime Plus": ["Rp 45.000"]
+    },
+    img: "https://i.imgur.com/2LyIYZn.jpeg"
+  },
+  hok: {
+    title: "LIST TOKEN HONOR OF KINGS",
+    items: {
+      "80 Token": ["Rp 20.000"], "160 Token": ["Rp 40.000"], "320 Token": ["Rp 80.000"],
+      "480 Token": ["Rp 120.000"], "800 Token": ["Rp 200.000"], "1280 Token": ["Rp 320.000"],
+      "1980 Token": ["Rp 500.000"], "Weekly Card": ["Rp 25.000"], "Monthly Card": ["Rp 100.000"]
+    },
+    img: "https://i.imgur.com/2LyIYZn.jpeg"
+  },
+  roblox: {
+    title: "LIST ROBUX ROBLOX",
+    items: {
+      "80 Robux": ["Rp 15.000"], "200 Robux": ["Rp 35.000"], "400 Robux": ["Rp 65.000"],
+      "800 Robux": ["Rp 125.000"], "1700 Robux": ["Rp 250.000"], "4500 Robux": ["Rp 650.000"],
+      "10000 Robux": ["Rp 1.400.000"], "Premium 220": ["Rp 35.000"], "Premium 450": ["Rp 70.000"],
+      "Premium 1000": ["Rp 150.000"]
+    },
+    img: "https://i.imgur.com/2LyIYZn.jpeg"
+  },
+  hsr: {
+    title: "LIST HONKAI STAR RAIL",
+    items: {
+      "60 Oneiric": ["Rp 15.000"], "330 + 30 Oneiric": ["Rp 70.000"], "1090 + 100 Oneiric": ["Rp 225.000"],
+      "2240 + 260 Oneiric": ["Rp 450.000"], "3880 + 600 Oneiric": ["Rp 750.000"], "Express Supply Pass": ["Rp 60.000"]
+    },
+    img: "https://i.imgur.com/2LyIYZn.jpeg"
+  },
+  zzz: {
+    title: "LIST ZENLESS ZONE ZERO",
+    items: {
+      "60 Monochrome": ["Rp 15.000"], "300 + 30 Monochrome": ["Rp 70.000"], "980 + 110 Monochrome": ["Rp 225.000"],
+      "1980 + 260 Monochrome": ["Rp 450.000"], "3280 + 600 Monochrome": ["Rp 750.000"], "Channel Subscription": ["Rp 60.000"]
+    },
+    img: "https://i.imgur.com/2LyIYZn.jpeg"
+  }
+};
+
+let gameAktif = 'ff';
+let produkPilihan = '';
+
+function renderProducts(){
+  const data = allData[gameAktif];
+  document.getElementById('gameTitle').innerText = data.title;
+  let html = '';
+  Object.keys(data.items).forEach(produk => {
+    html += `<div class="card">
+      <img src="${data.img}">
+      <h3>${produk}</h3>
+      <button onclick="showPrice('${produk}')">BELI</button>
+    </div>`;
+  });
+  document.getElementById('productList').innerHTML = html;
+}
+
+function switchGame(game){
+  gameAktif = game;
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  renderProducts();
+}
+
+function showPrice(produk){
+  produkPilihan = produk;
+  const data = allData[gameAktif];
+  let html = `<div class="produk-block"><h4>${produk}</h4><ul>`;
+  data.items[produk].forEach(item => {
+    html += `<li>${item}</li>`;
+  });
+  html += `</ul></div>`;
+  document.getElementById("allListHarga").innerHTML = html;
+  document.getElementById("listModal").style.display = "flex";
+}
+
+function closeModal(){
+  document.getElementById("listModal").style.display = "none";
+}
+
+document.getElementById("waBtn").onclick = function(){
+  window.open(`https://wa.me/6288983578768?text=bang+topup+${encodeURIComponent(produkPilihan)}+${gameAktif.toUpperCase()}+ID:`, '_blank');
+}
+
+renderProducts();
+</script>
+</body>
+</html>
